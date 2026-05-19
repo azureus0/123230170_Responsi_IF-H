@@ -1,0 +1,26 @@
+name: latihan_responsi_fix
+description: "Spaceflight News App - Latihan Responsi PAM"
+publish_to: "none"
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.0
+  get: ^4.6.6
+  shared_preferences: ^2.5.5
+  url_launcher: ^6.3.0
+  flutter_local_notifications: ^18.0.0
+  geolocator: ^13.0.0
+  intl: ^0.20.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
