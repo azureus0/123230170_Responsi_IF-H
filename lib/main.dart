@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'core/services/notification_service.dart';
 import 'features/auth/pages/login_page.dart';
 import 'features/auth/pages/register_page.dart';
-import 'features/home/pages/home_page.dart';
-import 'features/list/pages/list_page.dart';
+import 'features/store/pages/store_page.dart';
+import 'features/cart/pages/cart_page.dart';
 import 'features/detail/pages/detail_page.dart';
+import 'features/profile/pages/profile_page.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize notification service
-  await NotificationService().initialize();
-
+void main() {
   runApp(const MainApp());
 }
 
@@ -22,21 +17,23 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Spaceflight News',
+      title: 'MyToko',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorSchemeSeed: const Color(0xFF6750A4),
+        colorSchemeSeed: Colors.deepPurple,
         useMaterial3: true,
         brightness: Brightness.light,
-        scaffoldBackgroundColor: const Color(0xFFF5F0FF),
+        // scaffoldBackgroundColor: Colors.deepPurple.shade50,
+        scaffoldBackgroundColor: Colors.white,
       ),
       initialRoute: '/login',
       getPages: [
         GetPage(name: '/login', page: () => const LoginPage()),
         GetPage(name: '/register', page: () => const RegisterPage()),
-        GetPage(name: '/home', page: () => const HomePage()),
-        GetPage(name: '/list', page: () => const ListPage()),
+        GetPage(name: '/store', page: () => const StorePage()),
+        GetPage(name: '/cart', page: () => const CartPage()),
         GetPage(name: '/detail', page: () => const DetailPage()),
+        GetPage(name: '/profile', page: () => const ProfilePage()),
       ],
     );
   }

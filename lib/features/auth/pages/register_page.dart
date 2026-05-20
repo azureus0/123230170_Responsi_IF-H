@@ -10,7 +10,28 @@ class RegisterPage extends StatelessWidget {
     final controller = Get.find<AuthController>();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F0FF),
+      backgroundColor: Colors.deepPurple.shade50,
+      appBar: AppBar(
+        backgroundColor: Colors.deepPurple.shade50,
+        elevation: 0,
+        centerTitle: false,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black87),
+          onPressed: () {
+            controller.clearFields();
+            Get.back();
+          },
+          tooltip: 'Kembali',
+        ),
+        title: const Text(
+          'Register',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -23,11 +44,11 @@ class RegisterPage extends StatelessWidget {
                   width: 100,
                   height: 100,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFD0BCFF),
+                    color: Colors.deepPurple.shade200,
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFFD0BCFF).withValues(alpha: 0.4),
+                        color: Colors.deepPurple.shade200.withValues(alpha: 0.4),
                         blurRadius: 20,
                         offset: const Offset(0, 8),
                       ),
@@ -47,15 +68,7 @@ class RegisterPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF1C1B1F),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Daftar untuk mulai membaca berita',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey.shade600,
+                    color: Colors.black87,
                   ),
                 ),
                 const SizedBox(height: 40),
@@ -99,7 +112,7 @@ class RegisterPage extends StatelessWidget {
                             ? null
                             : controller.register,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF6750A4),
+                          backgroundColor: Colors.deepPurple,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
@@ -145,7 +158,7 @@ class RegisterPage extends StatelessWidget {
                       child: const Text(
                         'Login',
                         style: TextStyle(
-                          color: Color(0xFF6750A4),
+                          color: Colors.deepPurple,
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
                         ),
@@ -176,7 +189,7 @@ class RegisterPage extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(color: Colors.grey.shade600),
-        prefixIcon: Icon(icon, color: const Color(0xFF6750A4)),
+        prefixIcon: Icon(icon, color: Colors.deepPurple),
         suffixIcon: isPassword
             ? IconButton(
                 onPressed: onToggle,
@@ -200,7 +213,7 @@ class RegisterPage extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: Color(0xFF6750A4), width: 1.5),
+          borderSide: const BorderSide(color: Colors.deepPurple, width: 1.5),
         ),
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 16),

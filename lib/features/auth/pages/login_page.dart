@@ -13,7 +13,21 @@ class LoginPage extends StatelessWidget {
     controller.checkLoginStatus();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F0FF),
+      backgroundColor: Colors.deepPurple.shade50,
+      appBar: AppBar(
+        backgroundColor: Colors.deepPurple.shade50,
+        elevation: 0,
+        centerTitle: false,
+        automaticallyImplyLeading: false,
+        title: const Text(
+          'Login',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -26,18 +40,19 @@ class LoginPage extends StatelessWidget {
                   width: 100,
                   height: 100,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFD0BCFF),
+                    color: Colors.deepPurple.shade200,
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFFD0BCFF).withValues(alpha: 0.4),
+                        color: Colors.deepPurple.shade200.withValues(alpha: 0.4),
                         blurRadius: 20,
                         offset: const Offset(0, 8),
                       ),
                     ],
                   ),
                   child: const Icon(
-                    Icons.rocket_launch_rounded,
+                    //Icons.rocket_launch_rounded,
+                    Icons.storefront_outlined,
                     size: 50,
                     color: Colors.white,
                   ),
@@ -46,19 +61,11 @@ class LoginPage extends StatelessWidget {
 
                 // Title
                 const Text(
-                  'Spaceflight News',
+                  'Welcome to MyToko',
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF1C1B1F),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Masuk ke akun kamu',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey.shade600,
+                    color: Colors.black87,
                   ),
                 ),
                 const SizedBox(height: 40),
@@ -91,7 +98,7 @@ class LoginPage extends StatelessWidget {
                             ? null
                             : controller.login,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF6750A4),
+                          backgroundColor: Colors.deepPurple,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
@@ -135,9 +142,9 @@ class LoginPage extends StatelessWidget {
                         Get.toNamed('/register');
                       },
                       child: const Text(
-                        'Daftar',
+                        'Register',
                         style: TextStyle(
-                          color: Color(0xFF6750A4),
+                          color: Colors.deepPurple,
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
                         ),
@@ -168,7 +175,7 @@ class LoginPage extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(color: Colors.grey.shade600),
-        prefixIcon: Icon(icon, color: const Color(0xFF6750A4)),
+        prefixIcon: Icon(icon, color: Colors.deepPurple),
         suffixIcon: isPassword
             ? IconButton(
                 onPressed: onToggle,
@@ -192,7 +199,7 @@ class LoginPage extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: Color(0xFF6750A4), width: 1.5),
+          borderSide: const BorderSide(color: Colors.deepPurple, width: 1.5),
         ),
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 16),

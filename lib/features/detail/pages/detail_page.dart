@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import '../controllers/detail_controller.dart';
 
 class DetailPage extends StatelessWidget {
@@ -13,38 +12,47 @@ class DetailPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFE8DEF8),
+        backgroundColor: Colors.deepPurple.shade50,
         elevation: 0,
-        centerTitle: true,
+        centerTitle: false,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF1C1B1F)),
+          icon: const Icon(Icons.arrow_back, color: Colors.black87),
           onPressed: () => Get.back(),
+          tooltip: 'Back',
         ),
-        title: const Text(
-          'News Detail',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF1C1B1F),
+        title: Obx(
+          () => Text(
+            controller.product.value?.title ?? 'Detail Produk',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
           ),
         ),
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
           return const Center(
-            child: CircularProgressIndicator(color: Color(0xFF6750A4)),
+            child: CircularProgressIndicator(color: Colors.deepPurple),
           );
         }
 
-        if (controller.hasError.value || controller.article.value == null) {
+        if (controller.hasError.value || controller.product.value == null) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.error_outline, size: 60, color: Colors.grey.shade400),
+                Icon(
+                  Icons.error_outline,
+                  size: 60,
+                  color: Colors.grey.shade400,
+                ),
                 const SizedBox(height: 16),
                 Text(
-                  'Gagal memuat detail',
+                  'Gagal memuat detail produk',
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
                 ),
               ],
@@ -52,97 +60,121 @@ class DetailPage extends StatelessWidget {
           );
         }
 
-        final article = controller.article.value!;
+        final product = controller.product.value!;
 
         return SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Hero Image
-              Image.network(
-                article.imageUrl,
-                height: 250,
+              Container(
+                color: Colors.deepPurple.shade50,
                 width: double.infinity,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  height: 250,
-                  color: const Color(0xFFE8DEF8),
-                  child: const Icon(Icons.image_not_supported,
-                      size: 60, color: Color(0xFF6750A4)),
+                child: Image.network(
+                  product.thumbnail,
+                  height: 280,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) => SizedBox(
+                    height: 280,
+                    child: Icon(
+                      Icons.image_not_supported,
+                      size: 64,
+                      color: Colors.deepPurple.shade200,
+                    ),
+                  ),
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Title
                     Text(
-                      article.title,
+                      product.title,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                        height: 1.25,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      '\$${product.price.toStringAsFixed(2)}',
                       style: const TextStyle(
                         fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF1C1B1F),
-                        height: 1.3,
+                        color: Colors.deepPurple,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
-                    const SizedBox(height: 12),
-
-                    // News Site
-                    Text(
-                      article.newsSite,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey.shade600,
+                    const SizedBox(height: 14),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 52,
+                      child: Obx(
+                        () => ElevatedButton.icon(
+                          onPressed: controller.toggleCart,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: controller.isInCart.value
+                                ? Colors.red.shade700
+                                : Colors.deepPurple,
+                            foregroundColor: Colors.white,
+                            //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            shape: const StadiumBorder(),
+                          ),
+                          icon: Icon(
+                            controller.isInCart.value
+                                ? Icons.remove_shopping_cart_rounded
+                                : Icons.add_shopping_cart_rounded,
+                          ),
+                          label: Text(
+                            controller.isInCart.value
+                                ? 'Remove from Cart'
+                                : 'Add to Cart',
+                            style: const TextStyle(fontWeight: FontWeight.w700),
+                          ),
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 4),
-
-                    // Published Date
-                    Text(
-                      DateFormat('MMMM dd, yyyy').format(article.publishedAt),
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey.shade500,
-                      ),
+                    const SizedBox(height: 14),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        Chip(label: Text(product.category)),
+                        Chip(
+                          label: Text(
+                            'Rating ${product.rating.toStringAsFixed(1)}',
+                          ),
+                        ),
+                        Chip(label: Text('Stok ${product.stock}')),
+                      ],
                     ),
                     const SizedBox(height: 20),
-
-                    // Divider
-                    Divider(color: Colors.grey.shade200),
-                    const SizedBox(height: 16),
-
-                    // Summary / Content
+                    const Text(
+                      'Description',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
                     Text(
-                      article.summary,
+                      product.description,
                       style: const TextStyle(
                         fontSize: 15,
-                        color: Color(0xFF1C1B1F),
+                        color: Colors.black87,
                         height: 1.6,
                       ),
-                      textAlign: TextAlign.justify,
                     ),
-                    const SizedBox(height: 80),
+                    
+
+                    
+
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),
             ],
-          ),
-        );
-      }),
-      floatingActionButton: Obx(() {
-        if (controller.isLoading.value || controller.article.value == null) {
-          return const SizedBox();
-        }
-        return FloatingActionButton.extended(
-          onPressed: controller.openUrl,
-          backgroundColor: const Color(0xFF6750A4),
-          foregroundColor: Colors.white,
-          icon: const Icon(Icons.open_in_browser_rounded),
-          label: const Text(
-            'See more...',
-            style: TextStyle(fontWeight: FontWeight.w600),
           ),
         );
       }),

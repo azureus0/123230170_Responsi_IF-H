@@ -1,52 +1,47 @@
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../../../data/models/article_model.dart';
+import '../../../data/models/product_model.dart';
 import '../../../data/services/api_service.dart';
-import '../../../core/services/notification_service.dart';
+import '../../../shared/services/cart_service.dart';
 
 class DetailController extends GetxController {
   final ApiService _apiService = ApiService();
-  final NotificationService _notificationService = NotificationService();
+  final CartService _cartService = CartService();
 
-  final article = Rxn<Article>();
+  final product = Rxn<Product>();
   final isLoading = true.obs;
   final hasError = false.obs;
+  final isInCart = false.obs;
 
   @override
   void onInit() {
     super.onInit();
     final args = Get.arguments as Map<String, dynamic>;
-    fetchDetail(args['category'], args['id']);
+    fetchDetail(args['id']);
   }
 
-  /// Fetch article detail from API
-  Future<void> fetchDetail(String category, int id) async {
+  Future<void> fetchDetail(int id) async {
     try {
       isLoading.value = true;
       hasError.value = false;
-      final result = await _apiService.fetchArticleDetail(category, id);
-      article.value = result;
-
-      // Show notification when article is opened
-      await _notificationService.showNotification(
-        id: 3,
-        title: 'Sedang Membaca 📖',
-        body: result.title,
-      );
-    } catch (e) {
+      product.value = await _apiService.fetchProductDetail(id);
+      isInCart.value = await _cartService.isInCart(id);
+    } catch (_) {
       hasError.value = true;
     } finally {
       isLoading.value = false;
     }
   }
 
-  /// Open the article URL in external browser
-  Future<void> openUrl() async {
-    if (article.value != null) {
-      final uri = Uri.parse(article.value!.url);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-      }
+  Future<void> toggleCart() async {
+    final currentProduct = product.value;
+    if (currentProduct == null) return;
+
+    if (isInCart.value) {
+      await _cartService.removeFromCart(currentProduct.id);
+      isInCart.value = false;
+    } else {
+      await _cartService.addToCart(currentProduct.id);
+      isInCart.value = true;
     }
   }
 }
